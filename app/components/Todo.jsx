@@ -58,7 +58,8 @@ export default function Todos() {
     setEditingTodoText(text);
   };
 
-  const handleSaveTodo = (id) => {
+  const handleSaveTodo = (e,id) => {
+    e.stopPropagation()
     setTodos(
       todos.map((todo) =>
         todo.id === id ? { ...todo, text: editingTodoText } : todo
@@ -67,7 +68,8 @@ export default function Todos() {
     setEditingTodoId(null);
   };
 
-  const handleCancelEdit = () => {
+  const handleCancelEdit = (e) => {
+    e.stopPropagation()
     setEditingTodoId(null);
     setEditingTodoText('');
   };
@@ -176,7 +178,7 @@ export default function Todos() {
             className={`flex items-center mb-2 cursor-pointer ease-in-out duration-300 ${
               todo.completed ? 'bg-[#20bb75] text-white' : ''
             }`}
-            onClick={() => handleTodoClick(todo.id)}
+            // onClick={() => handleTodoClick(todo.id)}
           >
             {editingTodoId === todo.id ? (
               <>
@@ -187,7 +189,7 @@ export default function Todos() {
                   className="flex-1 rounded-md px-4 py-2 text-black focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
                 <button
-                  onClick={() => handleSaveTodo(todo.id)}
+                  onClick={(e) => handleSaveTodo(e,todo.id)}
                   className="bg-green-500 text-white px-4 py-2 rounded-md ml-2 focus:outline-none focus:ring-2 focus:ring-green-500"
                 >
                   Save
@@ -200,8 +202,8 @@ export default function Todos() {
                 </button>
               </>
             ) : (
-              <div className='flex justify-between w-full py-2'>
-                <span className='flex items-center pl-2 overflow-hidden' title={todo.text}>{todo.text}</span>
+              <div className='flex justify-between w-full py-2' onClick={() => handleTodoClick(todo.id)}>
+                <span className='flex items-center pl-2 overflow-hidden' title={todo.text} >{todo.text}</span>
                 {!selectedTodos.includes(todo.id) && (
 
                   <div className='flex'>
